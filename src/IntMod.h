@@ -8,7 +8,7 @@ using namespace std;
 
 class IntMod {
 private:
-    int val;
+    long long val;
     int p;
     static int defaultMod;
     static bool defaultModSet;
@@ -58,16 +58,39 @@ public:
 
     // Comparison operators
     bool operator==(const IntMod& b) const;
+    bool operator==(int b) const;
     bool operator!=(const IntMod& b) const;
+    bool operator!=(int b) const;
     bool operator<(const IntMod& b) const;
+    bool operator<(int b) const;
     bool operator<=(const IntMod& b) const;
+    bool operator<=(int b) const;
     bool operator>(const IntMod& b) const;
+    bool operator>(int b) const;
     bool operator>=(const IntMod& b) const;
+    bool operator>=(int b) const;
+
+    // Casting
+    operator short() const {
+      return (short) this->val;
+    }
+    operator int() const {
+      return (int) this->val;
+    }
+    operator long() const {
+      return (long) this->val;
+    }
+    operator float() const {
+      return (float) this->val;
+    }
+    operator double() const {
+      return (double) this->val;
+    }
 
     // Stream operators
     friend ostream& operator<<(ostream& os, const IntMod& a);
     friend istream& operator>>(istream& is, IntMod& a);
-    string toString();
+    string toString() const;
 
     /* ACCESSORS */
     int modulus() const;
@@ -86,5 +109,9 @@ public:
       return defaultMod;
     }
 };
+
+inline std::string to_string(const IntMod& a) {
+  return a.toString();
+}
 
 #endif // INT_MOD_H
