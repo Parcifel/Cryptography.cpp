@@ -21,6 +21,12 @@ Furthermode the class has implementations for both power and devision. It can do
 
 > [NOTE] This function is still in the implementation fase and thus some functionality may be buggy or not implemented as of yet. I am planning on making this object as complete as possible.
 
+#### Use
+```cpp
+IntMod::setDefaultDivisor(8); // Set default devisor for all default initilizations until default is changed
+IntMod a(5); // Initialize with a specified default devisor (devisor must be set beforehand)
+IntMod b(5, 7); // Initialize with value 5 and divisor 7, sets default to 7
+```
 
 ### <Helper.h\\>
 
