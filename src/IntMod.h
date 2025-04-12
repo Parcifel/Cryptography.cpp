@@ -90,7 +90,7 @@ public:
     // Stream operators
     friend ostream& operator<<(ostream& os, const IntMod& a);
     friend istream& operator>>(istream& is, IntMod& a);
-    string toString();
+    string toString() const;
 
     /* ACCESSORS */
     int modulus() const;
@@ -109,5 +109,9 @@ public:
       return defaultMod;
     }
 };
+
+inline std::string to_string(const IntMod& a) {
+  return a.toString();
+}
 
 #endif // INT_MOD_H

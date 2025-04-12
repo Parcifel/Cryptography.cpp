@@ -10,7 +10,8 @@ TARGET = crypto
 # Source files
 SRCS = $(SRC_DIR)/Main.cpp \
 	$(SRC_DIR)/IntMod.cpp \
-	$(SRC_DIR)/Logger.cpp
+	$(SRC_DIR)/Logger.cpp \
+	$(SRC_DIR)/Helper.cpp
 
 # Object files
 OBJS = $(SRCS:$(SRC_DIR)/%.cpp=$(BIN_DIR)/%.o)

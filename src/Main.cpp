@@ -50,37 +50,64 @@ int main() {
   // Logger::log(MessageType::INFO, "float", e);
   // Logger::log(MessageType::INFO, "double", f);
 
-  int p = 997;
-  Logger::log(MessageType::INFO, "Prime", isPrime(p));
+  // int p = 997;
+  // Logger::log(MessageType::INFO, "Prime", isPrime(p));
 
 
-  vector<int> primes = {
-    100003,  // prime
-    999983,  // prime (largest 6-digit prime)
-    104729,  // prime
-    104743   // prime
-  };
+  // vector<int> primes = {
+  //   100003,  // prime
+  //   999983,  // prime (largest 6-digit prime)
+  //   104729,  // prime
+  //   104743   // prime
+  // };
 
-  // Test composite numbers
-  vector<int> composites = {
-    100001,  // 73 × 1,370
-    123456,  // 2^6 × 3 × 643
-    999966,  // 2 × 3 × 166,661
-    104730   // 2 × 3 × 17,455
-  };
+  // // Test composite numbers
+  // vector<int> composites = {
+  //   100001,  // 73 × 1,370
+  //   123456,  // 2^6 × 3 × 643
+  //   999966,  // 2 × 3 × 166,661
+  //   104730   // 2 × 3 × 17,455
+  // };
 
-  Logger::log(MessageType::INFO, "Prime Tests", "Testing large numbers for primality");
+  // Logger::log(MessageType::INFO, "Prime Tests", "Testing large numbers for primality");
+  // Logger::blank();
+
+  // for (int n : primes) {
+  //   Logger::log(MessageType::INFO, "Testing " + to_string(n), isPrime(n));
+  // }
+
+  // Logger::blank();
+
+  // for (int n : composites) {
+  //   Logger::log(MessageType::INFO, "Testing " + to_string(n), isPrime(n));
+  // }
+
+  Logger::log(MessageType::INFO, "Division Tests", "Testing division in Z/pZ");
   Logger::blank();
 
-  for (int n : primes) {
-    Logger::log(MessageType::INFO, "Testing " + to_string(n), isPrime(n));
+  try {
+    // Test in Z/7Z
+    IntMod::setDefaultModulus(7);
+    IntMod a(3);
+    IntMod b(2);
+    IntMod c = a / b;  // Should be 5 because 2 * 5 ≡ 3 (mod 7)
+    Logger::log(MessageType::INFO, "3/2 mod 7", c);
+
+    // Test division by 1
+    IntMod d = a / IntMod(1);  // Should be 3
+    Logger::log(MessageType::INFO, "3/1 mod 7", d);
+
+    // Test division where result > modulus
+    IntMod e(6);
+    IntMod f(3);
+    IntMod g = e / f;  // Should be 2 because 3 * 2 ≡ 6 (mod 7)
+    Logger::log(MessageType::INFO, "6/3 mod 7", g);
+
+  } catch (const exception& e) {
+    Logger::log(MessageType::DEBUG, "Error", e.what());
   }
 
   Logger::blank();
-
-  for (int n : composites) {
-    Logger::log(MessageType::INFO, "Testing " + to_string(n), isPrime(n));
-  }
  
   Logger::log(MessageType::SUCCESS, "System", "Application finished");
   return 0;

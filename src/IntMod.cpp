@@ -1,4 +1,5 @@
 #include "IntMod.h"
+#include "Helper.h"
 #include <iostream>
 #include <bitset>
 using namespace std;
@@ -123,13 +124,13 @@ IntMod IntMod::operator=(int a) {
 IntMod IntMod::operator+(const IntMod& b) const {
   // assert(this->p == b.p);
   check_base(b);
-  IntMod result(p);
+  IntMod result(val);
   result = (this->val + b.val) % p;
   return result;
 }
 
 IntMod IntMod::operator+(int b) const {
-  IntMod result(p);
+  IntMod result(val);
   result = (this->val + b) % p;
   return result;
 }
@@ -138,13 +139,13 @@ IntMod IntMod::operator+(int b) const {
 IntMod IntMod::operator-(const IntMod& b) const {
   // assert(this->p == b.p);
   check_base(b);
-  IntMod result(p);
+  IntMod result(val);
   result = (this->val - b.val) % p;
   return result;
 }
 
 IntMod IntMod::operator-(int b) const {
-  IntMod result(p);
+  IntMod result(val);
   result = (this->val - b) % p;
   return result;
 }
@@ -153,13 +154,13 @@ IntMod IntMod::operator-(int b) const {
 IntMod IntMod::operator*(const IntMod& b) const {
   // assert(this->p == b.p);
   check_base(b);
-  IntMod result(p);
+  IntMod result(val);
   result = (this->val * b.val) % p;
   return result;
 }
 
 IntMod IntMod::operator*(int b) const {
-  IntMod result(p);
+  IntMod result(val);
   result = (this->val * b) % p;
   return result;
 }
@@ -168,8 +169,20 @@ IntMod IntMod::operator*(int b) const {
 IntMod IntMod::operator/(const IntMod& b) const {
   // assert(this->p == b.p);
   check_base(b);
+  // p must be prime to fint the modular inverse
+  if (!isPrime(p)) {
+    throw invalid_argument("Cannor find modular inverse of non prime divisor " + to_string(p));
+  }
 
-  return *this;
+  // use extended euclidean algorithm to find modular inverse of b
+  vector<int> eea = extendedEuclidAlgo((int)p, (int)b.val);
+  IntMod inv(eea[2], p);
+  Logger::log(MessageType::DEBUG, "Modular Inverse", inv);
+
+  IntMod result(val);
+  result = result * inv;
+
+  return result;
 }
 
 /* POWER */
@@ -272,7 +285,7 @@ IntMod IntMod::operator+() const {
 }
 
 IntMod IntMod::operator-() const {
-  IntMod result(p);
+  IntMod result(val);
   result.val = (-val) % p;
   return result;
 }
@@ -351,14 +364,8 @@ istream& operator>>(istream& is, IntMod& a) {
   return is;
 }
 
-string IntMod::toString() {
-  stringstream ss;
-  ss << this->val << " (mod " << this->p << ")";
-  return ss.str();
-}
-
-string to_string(IntMod a) {
-  return a.toString();
+string IntMod::toString() const {
+  return to_string(val) + " (mod " + to_string(p) + ")";
 }
 
 /* ACCESSORS */
