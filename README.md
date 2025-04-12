@@ -13,6 +13,17 @@
 - Diffie-Hawman key generation and exchange.
 - Diffie-Hawmen code break.
 
+## Compile
+```bash
+$ make clean # remove current object and executable files
+
+$ make # compiled the project
+$ make debug # compiles with DEBUG flag set
+$ make verbose # compile with DEBUG and VERBOSE flags set
+
+$ ./crypto # run project as compiled
+```
+
 ### <IntMod.h\\>
 
 This object simulates the integers module. It overloads most operations used for normal integers and thus can be used as such. In most cases it can be used in conjunction with integers, but this should be avoided. Fos simplicity and ease of use there is way to set the devisor statically. This is useful when you have a whole range of code that would be in the same modulo space.
