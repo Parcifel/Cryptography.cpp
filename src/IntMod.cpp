@@ -35,8 +35,7 @@ int IntMod::powerModL2R(int e) {
   bool start = false;
 
   // == for debugging output ==
-  vector<string> headers = {"i", "e[i]", "r"};
-  vector<vector<string>> data = {{"", "", to_string(r)}};
+  vector<vector<string>> table = {{"", "", to_string(r)}};
   // == ==
 
   for (int i = 31; i >= 0; i--) {
@@ -50,13 +49,25 @@ int IntMod::powerModL2R(int e) {
   // == for debugging output ==
     if (start) {
       if (bits[i]) {
-        data.push_back({to_string(i), "1", to_string(r)});
+        table.push_back({to_string(i), "1", to_string(r)});
       } else {
-        data.push_back({to_string(i), "0", to_string(r)});
+        table.push_back({to_string(i), "0", to_string(r)});
       }
     }
   }
-  Logger::table(MessageType::DEBUG, "Modulo Power (L2R)", headers, data);
+  Logger::blank(MessageType::DEBUG, 2);
+  Logger::table(
+    MessageType::VERBOSE, 
+    "Modulo Power (L2R)", 
+    {"i", "e[i]", "r"}, 
+    table
+  );
+  Logger::log(
+    MessageType::DEBUG, 
+    "Modulo Power (L2R)", 
+    to_string(val) + "^" + to_string(e) + " = " + to_string(r)
+  );
+  Logger::blank(MessageType::DEBUG);
   // == == 
   
   return (int) r;
@@ -86,12 +97,19 @@ int IntMod::powerModR2L(int exp) {
   }
 
   // == ==
+  Logger::blank(MessageType::DEBUG, 2);
   Logger::table(
-    MessageType::DEBUG,
+    MessageType::VERBOSE,
     "Modulo Power (R2L)",
     {"r", "b", "e"},
     table
   );
+  Logger::log(
+    MessageType::DEBUG, 
+    "Modulo Power (R2L)", 
+    to_string(val) + "^" + to_string(exp) + " = " + to_string(r)
+  );
+  Logger::blank(MessageType::DEBUG);
   //== ==
 
   return (int) r;
@@ -177,7 +195,6 @@ IntMod IntMod::operator/(const IntMod& b) const {
   // use extended euclidean algorithm to find modular inverse of b
   vector<int> eea = extendedEuclidAlgo((int)p, (int)b.val);
   IntMod inv(eea[2], p);
-  Logger::log(MessageType::DEBUG, "Modular Inverse", inv);
 
   IntMod result(val);
   result = result * inv;
@@ -296,7 +313,7 @@ bool IntMod::operator==(const IntMod& b) const {
   check_base(b);
   return this->val == b.val;
 }
-bool IntMod::operator==(int b) {
+bool IntMod::operator==(int b) const {
   b = b % p;
   return this->val == b;
 }
@@ -306,7 +323,7 @@ bool IntMod::operator!=(const IntMod& b) const {
   check_base(b);
   return this->val != b.val;
 }
-bool IntMod::operator!=(int b) {
+bool IntMod::operator!=(int b) const {
   b = b % p;
   return this->val != b;
 }
@@ -316,7 +333,7 @@ bool IntMod::operator<(const IntMod& b) const {
   check_base(b);
   return this->val < b.val;
 }
-bool IntMod::operator<(int b) {
+bool IntMod::operator<(int b) const {
   b = b % p;
   return this->val < b;
 }
@@ -326,7 +343,7 @@ bool IntMod::operator<=(const IntMod& b) const {
   check_base(b);
   return this->val <= b.val;
 }
-bool IntMod::operator<=(int b) {
+bool IntMod::operator<=(int b) const {
   b = b % p;
   return this->val <= b;
 }
@@ -336,7 +353,7 @@ bool IntMod::operator>(const IntMod& b) const {
   check_base(b);
   return this->val > b.val;
 }
-bool IntMod::operator>(int b) {
+bool IntMod::operator>(int b) const {
   b = b % p;
   return this->val > b;
 }
@@ -346,7 +363,7 @@ bool IntMod::operator>=(const IntMod& b) const {
   check_base(b);
   return this->val >= b.val;
 }
-bool IntMod::operator>=(int b) {
+bool IntMod::operator>=(int b) const {
   b = b % p;
   return this->val >= b;
 }

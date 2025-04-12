@@ -6,8 +6,27 @@ using namespace std;
 #include "Logger.h"
 #include "Helper.h"
 
+void init() {
+  #ifdef DEBUG_MODE
+    Logger::enableDebug();
+  #endif
+
+  #ifdef VERBOSE_MODE
+    Logger::enableVerbose();
+  #endif
+
+  Logger::log(MessageType::SUCCESS, "System", "Starting application");
+  Logger::log(MessageType::DEBUG, "Debug", "Debug mode active");
+  Logger::log(MessageType::VERBOSE, "Verbose", "Verbose mode active");
+  Logger::blank(MessageType::INFO);
+}
+
+void close() {
+  Logger::log(MessageType::SUCCESS, "System", "Application finished");
+}
+
 int main() {
-  Logger::log(MessageType::SUCCESS, "System", "Application started");
+  init();
 
   // IntMod::setDefaultModulus(37);
   // IntMod a1 = IntMod(2);
@@ -83,7 +102,7 @@ int main() {
   // }
 
   Logger::log(MessageType::INFO, "Division Tests", "Testing division in Z/pZ");
-  Logger::blank();
+  Logger::blank(MessageType::DEBUG);
 
   try {
     // Test in Z/7Z
@@ -107,8 +126,8 @@ int main() {
     Logger::log(MessageType::DEBUG, "Error", e.what());
   }
 
-  Logger::blank();
+  Logger::blank(MessageType::DEBUG);
  
-  Logger::log(MessageType::SUCCESS, "System", "Application finished");
+  close();
   return 0;
 }

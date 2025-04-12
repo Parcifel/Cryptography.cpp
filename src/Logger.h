@@ -74,12 +74,15 @@ enum class MessageType {
   DEBUG,  // Magenta
   OUTPUT,  // Cyan
   SUCCESS, // Green
-  TABLE
+  TABLE,
+  VERBOSE
 };
 
 class Logger {
 private:
   static const map<MessageType, MessageTypeInfo> messageTypes;
+  static bool debugEnabled;
+  static bool verboseEnabled;
 
   static std::string getTimestamp() {
     auto now = std::chrono::system_clock::now();
@@ -113,8 +116,14 @@ private:
   }
 
 public:
-template<typename T>
+  static void enableDebug(bool enable = true) { debugEnabled = enable; }
+  static void enableVerbose(bool enable = true) { verboseEnabled = enable; }
+
+  template<typename T>
   static void log(MessageType type, const std::string& header, const T& message) {
+    if (type == MessageType::DEBUG && !debugEnabled) return;
+    if (type == MessageType::VERBOSE && !verboseEnabled) return;
+
     auto& info = messageTypes.at(type);
     std::cout << "\033[" << static_cast<int>(Color::GRAY) << "m"
               << "[" << getTimestamp() << "] "                          // Timpstamp
@@ -128,6 +137,9 @@ template<typename T>
 
   template<typename... Args>
   static void table(MessageType type, const string& tableHeader, const vector<string>& headers, const vector<vector<Args...>>& rawData) {
+    if (type == MessageType::DEBUG && !debugEnabled) return;
+    if (type == MessageType::VERBOSE && !verboseEnabled) return;
+
     vector<vector<string>> data;
     for (const auto& row : rawData) {
       vector<string> stringRow;
@@ -175,11 +187,17 @@ template<typename T>
     }
   }
 
-  static void blank() {
+  static void blank(MessageType type) {
+    if (type == MessageType::DEBUG && !debugEnabled) return;
+    if (type == MessageType::VERBOSE && !verboseEnabled) return;
+
     cout << "\n";
   }
 
-  static void blank(int n) {
+  static void blank(MessageType type, int n) {
+    if (type == MessageType::DEBUG && !debugEnabled) return;
+    if (type == MessageType::VERBOSE && !verboseEnabled) return;
+
     for (int i = 0; i < n; i++) {
       cout << "\n";
     }

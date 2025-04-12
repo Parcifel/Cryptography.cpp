@@ -27,16 +27,16 @@ int euclidAlgo(int a, int b) {
     b = r;
   }
 
-  // == debug output ==
-  Logger::blank(2);
+  // == verbose output ==
+  Logger::blank(MessageType::VERBOSE, 2);
   Logger::table(
-    MessageType::DEBUG, 
+    MessageType::VERBOSE, 
     "Euclidean Algorithm (" + to_string(a) + ", " + to_string(b) + ")", 
     {"a", "b", "r"}, 
     table
   );
-  Logger::log(MessageType::DEBUG, "Output", a);
-  Logger::blank();
+  Logger::log(MessageType::VERBOSE, "Output", a);
+  Logger::blank(MessageType::VERBOSE);
   // == ==
    
   return a;
@@ -83,10 +83,10 @@ vector<int> extendedEuclidAlgo(int a, int b) {
 
   vector<int> result = {table[i-1][1], table[i-1][2], table[i-1][3]};
 
-  // == for debug output ==
-  Logger::blank(2);
+  // == for verbose output ==
+  Logger::blank(MessageType::DEBUG, 2);
   Logger::table(
-    MessageType::DEBUG, 
+    MessageType::VERBOSE, 
     "Extended Euclidean Algorithm (" + to_string(a) + ", " + to_string(b) + ")", 
     {"q", "r", "x", "y"}, 
     table
@@ -95,11 +95,11 @@ vector<int> extendedEuclidAlgo(int a, int b) {
   Logger::log(MessageType::DEBUG, "x", to_string(result[1]));
   Logger::log(MessageType::DEBUG, "y", to_string(result[2]));
   Logger::log(
-    MessageType::DEBUG, 
+    MessageType::VERBOSE, 
     "result",
     to_string(a) + "*" + to_string(result[1]) + " + " + to_string(b) + "*" + to_string(result[2]) + " = " + to_string(result[0]) 
   );
-  Logger::blank();
+  Logger::blank(MessageType::DEBUG);
   // == ==
 
   return result;

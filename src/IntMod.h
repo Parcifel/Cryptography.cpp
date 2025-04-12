@@ -58,17 +58,17 @@ public:
 
     // Comparison operators
     bool operator==(const IntMod& b) const;
-    bool operator==(int b);
+    bool operator==(int b) const;
     bool operator!=(const IntMod& b) const;
-    bool operator!=(int b);
+    bool operator!=(int b) const;
     bool operator<(const IntMod& b) const;
-    bool operator<(int b);
+    bool operator<(int b) const;
     bool operator<=(const IntMod& b) const;
-    bool operator<=(int b);
+    bool operator<=(int b) const;
     bool operator>(const IntMod& b) const;
-    bool operator>(int b);
+    bool operator>(int b) const;
     bool operator>=(const IntMod& b) const;
-    bool operator>=(int b);
+    bool operator>=(int b) const;
 
     // Casting
     operator short() const {
