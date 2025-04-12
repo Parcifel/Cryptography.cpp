@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include "Logger.h"
+#include "IntMod.h"
+#include <random>
 
 /**
  * @brief Gets the gcd(a, b) with a < b
@@ -104,6 +106,49 @@ vector<int> extendedEuclidAlgo(int a, int b) {
   // == ==
 
   return result;
+}
+
+/**
+ * Uses the Miller Radin Test to calculate if a number is prime
+ */
+bool isPrime(int p) {
+  if (p <= 0) {
+    throw invalid_argument("Value cannot be <= 0.");
+  }
+
+  if (p == 1)     return false;
+  if (p <= 3)     return true;
+  if (p % 2 == 0) return false;
+
+  int d = p - 1;
+  int s = 0;
+  while (d % 2 == 0) {
+    d /= 2;
+    s++;
+  }
+
+  int k = 5;
+  for (int i = 0; i < k; i++) {
+    int a = 2 + rand() % (p - 3);
+
+    IntMod base(a, p);
+    IntMod x = base.pow(d);
+
+    if (x == 1 || x == p-1) continue;
+
+    bool composite = true;
+    for (int r = 1; r < s; r++) {
+      x = x * x;
+      if (x == 1) return false;
+      if (x == p-1) {
+        composite = false;
+        break;
+      }
+    }
+
+      if (composite) return false;
+  }
+  return true;
 }
 
 #endif

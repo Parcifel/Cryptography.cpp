@@ -8,7 +8,7 @@ using namespace std;
 
 class IntMod {
 private:
-    int val;
+    long long val;
     int p;
     static int defaultMod;
     static bool defaultModSet;
@@ -58,11 +58,34 @@ public:
 
     // Comparison operators
     bool operator==(const IntMod& b) const;
+    bool operator==(int b);
     bool operator!=(const IntMod& b) const;
+    bool operator!=(int b);
     bool operator<(const IntMod& b) const;
+    bool operator<(int b);
     bool operator<=(const IntMod& b) const;
+    bool operator<=(int b);
     bool operator>(const IntMod& b) const;
+    bool operator>(int b);
     bool operator>=(const IntMod& b) const;
+    bool operator>=(int b);
+
+    // Casting
+    operator short() const {
+      return (short) this->val;
+    }
+    operator int() const {
+      return (int) this->val;
+    }
+    operator long() const {
+      return (long) this->val;
+    }
+    operator float() const {
+      return (float) this->val;
+    }
+    operator double() const {
+      return (double) this->val;
+    }
 
     // Stream operators
     friend ostream& operator<<(ostream& os, const IntMod& a);

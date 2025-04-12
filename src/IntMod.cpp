@@ -29,8 +29,8 @@ int IntMod::powerModL2R(int e) {
   }
 
   bitset<32> bits = e;
-  int r = 1;
-  int b = val;
+  long long r = 1;
+  long long b = val;
   bool start = false;
 
   // == for debugging output ==
@@ -58,16 +58,21 @@ int IntMod::powerModL2R(int e) {
   Logger::table(MessageType::DEBUG, "Modulo Power (L2R)", headers, data);
   // == == 
   
-  return r;
+  return (int) r;
 }
 
-int IntMod::powerModR2L(int e) {
-  if (e < 0) {
-    throw invalid_argument("Expected non-negative exponent, got" + to_string(e));
+int IntMod::powerModR2L(int exp) {
+  if (exp < 0) {
+    throw invalid_argument("Expected non-negative exponent, got" + to_string(exp));
   }
 
-  int r = 1;
-  int b = val;
+  long long e = exp;
+  long long r = 1;
+  long long b = val;
+
+  // == for debug output ==
+  vector<vector<long long>> table = {{r, b, e}};
+  // == ==
 
   while (e > 0) {
     // if e is odd
@@ -76,13 +81,20 @@ int IntMod::powerModR2L(int e) {
     }
     b = (b * b) % p;
     e = e / 2;
+    table.push_back({r, b, e});
   }
 
-  return r;
+  // == ==
+  Logger::table(
+    MessageType::DEBUG,
+    "Modulo Power (R2L)",
+    {"r", "b", "e"},
+    table
+  );
+  //== ==
+
+  return (int) r;
 }
-
-
-
 
 IntMod::IntMod(int val) {
   if (!isDefaultModSet()) {
@@ -97,6 +109,7 @@ IntMod::IntMod(int val, int p) {
   this->val = val;
   this->p = p;
   norm();
+  IntMod::setDefaultModulus(p);
 }
 
 /* ASSIGNMENT */
@@ -155,8 +168,7 @@ IntMod IntMod::operator*(int b) const {
 IntMod IntMod::operator/(const IntMod& b) const {
   // assert(this->p == b.p);
   check_base(b);
-  // Only works if p is a prime
-  // Implement requires finding the multiplicative inverse
+
   return *this;
 }
 
@@ -164,18 +176,20 @@ IntMod IntMod::operator/(const IntMod& b) const {
 IntMod IntMod::pow(int e) {
   if (e < 0) {
     // get inverse and then take exponenet of that
-    return IntMod(0);
+    return IntMod(0, p);
   }
 
-  int l2r = powerModL2R(e);
-  int r2l = powerModR2L(e);
+  IntMod::setDefaultModulus(p);
+  int a = powerModL2R(e);
+  IntMod l2r(a);
+  int b = powerModR2L(e);
+  IntMod r2l(b);
 
   if (l2r != r2l) {
-    throw invalid_argument("Arithmatic exception. Power functions didnt get the smae result, l2r got " + to_string(l2r) + " but r2l got " + to_string(r2l));
+    throw invalid_argument("Arithmatic exception. Power functions didnt get the smae result, l2r got " + l2r.toString() + " but r2l got " + r2l.toString());
   }
 
-  IntMod result(l2r);
-  return result;
+  return l2r;
 }
 
 /* MODULO */
@@ -269,11 +283,19 @@ bool IntMod::operator==(const IntMod& b) const {
   check_base(b);
   return this->val == b.val;
 }
+bool IntMod::operator==(int b) {
+  b = b % p;
+  return this->val == b;
+}
 
 bool IntMod::operator!=(const IntMod& b) const {
   // assert(this->p == b.p);
   check_base(b);
   return this->val != b.val;
+}
+bool IntMod::operator!=(int b) {
+  b = b % p;
+  return this->val != b;
 }
 
 bool IntMod::operator<(const IntMod& b) const {
@@ -281,11 +303,19 @@ bool IntMod::operator<(const IntMod& b) const {
   check_base(b);
   return this->val < b.val;
 }
+bool IntMod::operator<(int b) {
+  b = b % p;
+  return this->val < b;
+}
 
 bool IntMod::operator<=(const IntMod& b) const {
   // assert(this->p == b.p);
   check_base(b);
   return this->val <= b.val;
+}
+bool IntMod::operator<=(int b) {
+  b = b % p;
+  return this->val <= b;
 }
 
 bool IntMod::operator>(const IntMod& b) const {
@@ -293,11 +323,19 @@ bool IntMod::operator>(const IntMod& b) const {
   check_base(b);
   return this->val > b.val;
 }
+bool IntMod::operator>(int b) {
+  b = b % p;
+  return this->val > b;
+}
 
 bool IntMod::operator>=(const IntMod& b) const {
   // assert(this->p == b.p);
   check_base(b);
   return this->val >= b.val;
+}
+bool IntMod::operator>=(int b) {
+  b = b % p;
+  return this->val >= b;
 }
 
 /* ADMIN */
@@ -317,6 +355,10 @@ string IntMod::toString() {
   stringstream ss;
   ss << this->val << " (mod " << this->p << ")";
   return ss.str();
+}
+
+string to_string(IntMod a) {
+  return a.toString();
 }
 
 /* ACCESSORS */
