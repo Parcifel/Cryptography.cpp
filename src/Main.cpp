@@ -4,6 +4,7 @@ using namespace std;
 #include "Poly.h"
 #include "IntMod.h"
 #include "Logger.h"
+#include "Helper.h"
 
 int main() {
   Logger::log(MessageType::SUCCESS, "System", "Application started");
@@ -26,6 +27,13 @@ int main() {
   cout << "AB = " << AB << endl;
 
   Logger::log(MessageType::DEBUG, "", IntMod(2, 3));
+
+  int d = euclidAlgo(4864, 3458);
+  Logger::log(MessageType::INFO, "Euclidean Algo", "gcd(4864, 3458) = " + to_string(d));
+  vector<int> D = extendedEuclidAlgo(29, 11);
+  vector<vector<int>> D_tab = {D};
+
+  Logger::table(MessageType::INFO, "Extended Euclidean Algo", {}, D_tab);
 
   Logger::log(MessageType::SUCCESS, "System", "Application finished");
   return 0;

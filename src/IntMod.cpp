@@ -82,6 +82,8 @@ int IntMod::powerModR2L(int e) {
 }
 
 
+
+
 IntMod::IntMod(int val) {
   if (!isDefaultModSet()) {
     throw runtime_error("Default modulus not set.");

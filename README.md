@@ -13,7 +13,7 @@
 - Diffie-Hawman key generation and exchange.
 - Diffie-Hawmen code break.
 
-### IntMod
+### <IntMod\\>
 
 This object simulates the integers module. It overloads most operations used for normal integers and thus can be used as such. In most cases it can be used in conjunction with integers, but this should be avoided. Fos simplicity and ease of use there is way to set the devisor statically. This is useful when you have a whole range of code that would be in the same modulo space.
 
