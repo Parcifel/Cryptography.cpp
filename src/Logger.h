@@ -174,6 +174,16 @@ template<typename T>
       cout << "\n";
     }
   }
+
+  static void blank() {
+    cout << "\n";
+  }
+
+  static void blank(int n) {
+    for (int i = 0; i < n; i++) {
+      cout << "\n";
+    }
+  }
 };
 
 #endif

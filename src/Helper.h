@@ -16,12 +16,29 @@ int euclidAlgo(int a, int b) {
     throw invalid_argument("Expected a <= b, got a = " + to_string(a) + " and  b = " + to_string(b)); 
   }
 
+  // == for debug output ==
+  vector<vector<int>> table;
+  // == ==
+
   int r = 1;
   while (b != 0) {
     r = a % b;
+    table.push_back({a, b, r});
     a = b;
     b = r;
   }
+
+  // == debug output ==
+  Logger::blank(2);
+  Logger::table(
+    MessageType::DEBUG, 
+    "Euclidean Algorithm (" + to_string(a) + ", " + to_string(b) + ")", 
+    {"a", "b", "r"}, 
+    table
+  );
+  Logger::log(MessageType::DEBUG, "Output", a);
+  Logger::blank();
+  // == ==
    
   return a;
 }
@@ -42,8 +59,11 @@ vector<int> extendedEuclidAlgo(int a, int b) {
     throw invalid_argument("Expected a <= b, got a = " + to_string(a) + " and  b = " + to_string(b)); 
   }
 
+  // == for debug output ==
+  //  this can be optimised to not store the whole table but only 2 or 3 rows at a time
   vector<vector<int>> table;
   vector<int> row = {0, 0, 0, 0};
+  // == ==
 
   row = {0, a, 1, 0};
   table.push_back(row);
@@ -62,14 +82,27 @@ vector<int> extendedEuclidAlgo(int a, int b) {
     table.push_back(row);
   }
 
+  vector<int> result = {table[i-1][1], table[i-1][2], table[i-1][3]};
+
+  // == for debug output ==
+  Logger::blank(2);
   Logger::table(
     MessageType::DEBUG, 
     "Extended Euclidean Algorithm (" + to_string(a) + ", " + to_string(b) + ")", 
     {"q", "r", "x", "y"}, 
     table
   );
+  Logger::log(MessageType::DEBUG, "d", to_string(result[0]));
+  Logger::log(MessageType::DEBUG, "x", to_string(result[1]));
+  Logger::log(MessageType::DEBUG, "y", to_string(result[2]));
+  Logger::log(
+    MessageType::DEBUG, 
+    "result",
+    to_string(a) + "*" + to_string(result[1]) + " + " + to_string(b) + "*" + to_string(result[2]) + " = " + to_string(result[0]) 
+  );
+  Logger::blank();
+  // == ==
 
-  vector<int> result = {table[i-1][1], table[i-1][2], table[i-1][3]};
   return result;
 }
 
