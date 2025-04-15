@@ -29,7 +29,7 @@ $(shell mkdir -p $(BIN_DIR))
 
 # Main target
 $(TARGET): $(OBJS)
-	$(CXX) $(OBJS) -o $(TARGET)
+	$(CXX) $(OBJS) -o $(TARGET)$(ID)
 
 # Compile source files
 $(BIN_DIR)/%.o: $(SRC_DIR)/%.cpp

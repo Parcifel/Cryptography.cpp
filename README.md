@@ -13,7 +13,9 @@
 - Diffie-Hawman key generation and exchange.
 - Diffie-Hawmen code break.
 
-## Compile
+## Compile 
+
+**Manual**
 ```bash
 $ make clean # remove current object and executable files
 
@@ -23,6 +25,21 @@ $ make verbose # compile with DEBUG and VERBOSE flags set
 
 $ ./crypto # run project as compiled
 ```
+
+**Automatic**
+```bash
+$ chmod +x run.sh
+$ ./run.sh
+
+rm -rf bin crypto
+
+Mode (D=DEBUG, V=VERBOSE, _=DEFAULT): V  # Verbose mode
+Mode (D=DEBUG, V=VERBOSE, _=DEFAULT): D  # Debug mode
+Mode (D=DEBUG, V=VERBOSE, _=DEFAULT):    # Default mode
+
+...
+```
+
 
 ### <IntMod.h\\>
 

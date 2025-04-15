@@ -89,13 +89,13 @@ int main() {
   // };
 
   // Logger::log(MessageType::INFO, "Prime Tests", "Testing large numbers for primality");
-  // Logger::blank();
+  // // Logger::blank();
 
   // for (int n : primes) {
   //   Logger::log(MessageType::INFO, "Testing " + to_string(n), isPrime(n));
   // }
 
-  // Logger::blank();
+  // // Logger::blank();
 
   // for (int n : composites) {
   //   Logger::log(MessageType::INFO, "Testing " + to_string(n), isPrime(n));
