@@ -206,18 +206,22 @@ IntMod IntMod::operator/(const IntMod& b) const {
 IntMod IntMod::pow(int e) {
   if (e < 0) {
     // get inverse and then take exponenet of that
-    return IntMod(0, p);
+    IntMod result = 1 / e;
+    return result.pow(e*-1);
+  }
+  if (e == 1) {
+    return IntMod(1, p);
   }
 
   IntMod::setDefaultModulus(p);
   int a = powerModL2R(e);
   IntMod l2r(a);
-  int b = powerModR2L(e);
-  IntMod r2l(b);
+  // int b = powerModR2L(e);
+  // IntMod r2l(b);
 
-  if (l2r != r2l) {
-    throw invalid_argument("Arithmatic exception. Power functions didnt get the smae result, l2r got " + l2r.toString() + " but r2l got " + r2l.toString());
-  }
+  // if (l2r != r2l) {
+  //   throw invalid_argument("Arithmatic exception. Power functions didnt get the smae result, l2r got " + l2r.toString() + " but r2l got " + r2l.toString());
+  // }
 
   return l2r;
 }

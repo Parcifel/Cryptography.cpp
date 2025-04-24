@@ -80,3 +80,9 @@ This file has some miscelaneous functions used in the project. A brief overview 
 - [x] Euclidean Algorithms
 - [x] isPrime
 - [x] Modular Inverse, IntMod devisionm overload
+  
+
+### Resources
+
+- Handbook of Applied Cryptography (HAC)
+- Stellenbosch AM314 Course Material (No explicit cource material in shared in this repository, but rather is is used to derive some of the algorithms)

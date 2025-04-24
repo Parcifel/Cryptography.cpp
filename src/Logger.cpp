@@ -10,4 +10,5 @@ const map<MessageType, MessageTypeInfo> Logger::messageTypes = {
   {MessageType::SUCCESS,  {"SUCCESS",   Color::GREEN,   Color::BRIGHT_GREEN}},
   {MessageType::TABLE,    {"TABLE",     Color::BLUE,    Color::BRIGHT_BLUE}},
   {MessageType::VERBOSE,  {"VERBOSE",   Color::YELLOW,  Color::BRIGHT_YELLOW}},
+  {MessageType::ERROR,    {"ERROR",     Color::RED,     Color::BRIGHT_RED}},
 };

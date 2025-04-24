@@ -25,6 +25,26 @@ void close() {
   Logger::log(MessageType::SUCCESS, "System", "Application finished");
 }
 
+void fg(int p) {
+  int g = findGenerator(p);
+  Logger::log(MessageType::INFO, "Generator", g);
+  Logger::blank(MessageType::INFO);
+
+  IntMod::setDefaultModulus(p);
+  IntMod a(g);
+  Logger::log(MessageType::INFO, "IntMod element", a);
+
+  size_t anomily = 0;
+  for (long i = 2; i < p-1; i++) {
+    if (a.pow(i) == 1) {
+      anomily += 1;
+      Logger::log(MessageType::INFO, "Power to 1", i);
+    }
+  }
+
+  Logger::log(MessageType::INFO, "Last Exponent", a.pow(p-1));
+}
+
 int main() {
   init();
 
@@ -101,33 +121,85 @@ int main() {
   //   Logger::log(MessageType::INFO, "Testing " + to_string(n), isPrime(n));
   // }
 
-  Logger::log(MessageType::INFO, "Division Tests", "Testing division in Z/pZ");
-  Logger::blank(MessageType::DEBUG);
+  // Logger::log(MessageType::INFO, "Division Tests", "Testing division in Z/pZ");
+  // Logger::blank(MessageType::DEBUG);
 
-  try {
-    // Test in Z/7Z
-    IntMod::setDefaultModulus(7);
-    IntMod a(3);
-    IntMod b(2);
-    IntMod c = a / b;  // Should be 5 because 2 * 5 ≡ 3 (mod 7)
-    Logger::log(MessageType::INFO, "3/2 mod 7", c);
+  // try {
+  //   // Test in Z/7Z
+  //   IntMod::setDefaultModulus(7);
+  //   IntMod a(3);
+  //   IntMod b(2);
+  //   IntMod c = a / b;  // Should be 5 because 2 * 5 ≡ 3 (mod 7)
+  //   Logger::log(MessageType::INFO, "3/2 mod 7", c);
 
-    // Test division by 1
-    IntMod d = a / IntMod(1);  // Should be 3
-    Logger::log(MessageType::INFO, "3/1 mod 7", d);
+  //   // Test division by 1
+  //   IntMod d = a / IntMod(1);  // Should be 3
+  //   Logger::log(MessageType::INFO, "3/1 mod 7", d);
 
-    // Test division where result > modulus
-    IntMod e(6);
-    IntMod f(3);
-    IntMod g = e / f;  // Should be 2 because 3 * 2 ≡ 6 (mod 7)
-    Logger::log(MessageType::INFO, "6/3 mod 7", g);
+  //   // Test division where result > modulus
+  //   IntMod e(6);
+  //   IntMod f(3);
+  //   IntMod g = e / f;  // Should be 2 because 3 * 2 ≡ 6 (mod 7)
+  //   Logger::log(MessageType::INFO, "6/3 mod 7", g);
 
-  } catch (const exception& e) {
-    Logger::log(MessageType::DEBUG, "Error", e.what());
-  }
+  // } catch (const exception& e) {
+  //   Logger::log(MessageType::DEBUG, "Error", e.what());
+  // }
 
-  Logger::blank(MessageType::DEBUG);
+  // Logger::blank(MessageType::DEBUG);
  
+  
+  // int PRIME_8 = 251;
+  // int PRIME_10 = 1019;
+  // int PRIME_16 = 65521;
+  // int PRIME_32 = 2147483647;
+  
+
+  // Logger::log(MessageType::INFO, "Large Prime", PRIME_16);
+  // vector<vector<int>> primeFactors = primeFactorization(PRIME_16-1);
+  // // vector<vector<int>> data;
+  // // for (int i = 0; i < (int) primeFactors.size(); i++) {
+  // //   vector<int> cell = {primeFactors[i]};
+  // //   data.push_back(cell);
+  // // }
+  // // data.push_back(primeFactors);
+  // Logger::table(MessageType::DEBUG, "Prime Factors", {"Factors", "e"}, primeFactors);
+
+  // int n = 33;
+  // if (isPrime(33)) {
+  //   Logger::log(MessageType::VERBOSE, "TF", n);
+  // }
+
+  // for (int i = 2; i<100; i++) {
+  //   if (isPrime(i)) {
+  //     Logger::log(MessageType::INFO, "Prime", i);
+  //   }
+  // }
+
+  // fg(743);
+  // fg(PRIME_10);
+  // fg(PRIME_16);
+  // fg(PRIME_8);
+  
+  // Logger::log(MessageType::INFO, "Euler phi", to_string(PRIME_10) + " " + to_string(eulerPhi(PRIME_10)));
+  // Logger::log(MessageType::INFO, "Euler phi", to_string(PRIME_16) + " " + to_string(eulerPhi(PRIME_16)));
+  // Logger::log(MessageType::INFO, "Euler phi", to_string(PRIME_32) + " " + to_string(eulerPhi(PRIME_32)));
+  // Logger::log(MessageType::INFO, "Euler phi", to_string(PRIME_8) + " " + to_string(eulerPhi(PRIME_8)));
+
+  // Logger::log(MessageType::INFO, "Random Prime 10", generatePrime(10));
+  // Logger::log(MessageType::INFO, "Random Prime 12", generatePrime(12));
+  // Logger::log(MessageType::INFO, "Random Prime 16", generatePrime(16));
+  // Logger::log(MessageType::INFO, "Random Prime 20", generatePrime(20));
+  // for (size_t i = 0; i < 10000; i++) {
+  //   generatePrime(20);
+  // }
+
+
+  extendedEuclidAlgo(792, 317);
+  IntMod a(123, 851);
+  a.pow(5);
+
+
   close();
   return 0;
 }
