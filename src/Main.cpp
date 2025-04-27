@@ -43,6 +43,9 @@ void test_rsa_key_generation();
 int main() {
   init();
 
+  RSAEnc rsa(971, 977);
+  rsa.encrypt("Hello World");
+
   close();
   return 0;
 }

@@ -5,6 +5,32 @@
 #include <fstream>
 #include <string>
 
+template<typename T>
+vector<T> reverse(const vector<T>& v) {
+  vector<T> reversed(v.rbegin(), v.rend());
+  return reversed;
+}
+
+int binToDec(const vector<bool>& bits) {
+  int result = 0;
+  for (size_t i = 0; i < bits.size(); ++i) {
+    if (bits[i]) {
+      result += (1 << (bits.size() - 1 - i));
+    }
+  }
+  return result;
+}
+
+vector<bool> decToBin(int n) {
+  vector<bool> bits;
+  while (n > 0) {
+    bits.push_back(n % 2);
+    n >>= 1;
+  }
+  reverse(bits);
+  return bits;
+}
+
 
 int randomInt(int min, int max) {
   static random_device rd;

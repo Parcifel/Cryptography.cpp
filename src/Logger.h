@@ -101,6 +101,20 @@ private:
     return ss.str();
   }
 
+  template<typename T>
+  static string toString(const vector<T>& value) {
+    stringstream ss;
+    ss << "[";
+    for (size_t i = 0; i < value.size(); ++i) {
+      ss << toString(value[i]);
+      if (i != value.size() - 1) {
+        ss << ", ";
+      }
+    }
+    ss << "]";
+    return ss.str();
+  }
+
   static vector<size_t> calculateColumnWidths(const vector<string>& headers, const vector<vector<string>>& data) {
     vector<size_t> widths(max(headers.size(), data.empty() ? 0 : data[0].size()), 0);
 
@@ -123,6 +137,22 @@ public:
 
   template<typename T>
   static void log(MessageType type, const std::string& header, const T& message) {
+    if (type == MessageType::DEBUG && !debugEnabled) return;
+    if (type == MessageType::VERBOSE && !verboseEnabled) return;
+
+    auto& info = messageTypes.at(type);
+    std::cout << "\033[" << static_cast<int>(Color::GRAY) << "m"
+              << "[" << getTimestamp() << "] "                          // Timpstamp
+              << "\033[" << static_cast<int>(info.color) << "m"
+              << "[" << info.name << "] "                               // MessageType
+              << "\033[" << static_cast<int>(info.brightColor) << "m"
+              << header << ": "                                         // Header
+              << "\033[" << static_cast<int>(Color::RESET) << "m"
+              << toString(message) << std::endl;                                  // Message
+  }
+
+  template<typename T>
+  static void log(MessageType type, const std::string& header, const vector<T>& message) {
     if (type == MessageType::DEBUG && !debugEnabled) return;
     if (type == MessageType::VERBOSE && !verboseEnabled) return;
 
