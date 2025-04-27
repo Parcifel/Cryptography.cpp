@@ -76,7 +76,8 @@ enum class MessageType {
   SUCCESS, // Green
   TABLE,
   VERBOSE,
-  ERROR
+  ERROR,
+  WARNING
 };
 
 class Logger {

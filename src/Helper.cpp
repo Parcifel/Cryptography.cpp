@@ -21,7 +21,7 @@ int randomInt(int min, int max) {
  * @return
  */
 int euclidAlgo(int a, int b) {
-  if (b > a) {
+  if (b < a) {
     throw invalid_argument("Expected a <= b, got a = " + to_string(a) + " and  b = " + to_string(b)); 
   }
 
@@ -64,7 +64,7 @@ int euclidAlgo(int a, int b) {
  * @return a vector with a few output values as described in the description
  */
 vector<int> extendedEuclidAlgo(int a, int b) {
-  if (b > a) {
+  if (b < a) {
     throw invalid_argument("Expected a <= b, got a = " + to_string(a) + " and  b = " + to_string(b)); 
   }
 
@@ -393,4 +393,19 @@ long generatePrime(int k) {
   }
 
   return -1;
+}
+
+long long generateEncExp(long long phi) {
+  if (phi < 2) {
+    throw invalid_argument("phi must be greater than 1");
+  }
+
+  long long e = 0;
+  while (true) {
+    e = randomInt(2, (int) phi - 1);
+    if (euclidAlgo(e, (int) phi) == 1) {
+      break;
+    }
+  }
+  return e;
 }

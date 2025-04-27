@@ -19,7 +19,8 @@ endif
 SRCS = $(SRC_DIR)/Main.cpp \
 	$(SRC_DIR)/IntMod.cpp \
 	$(SRC_DIR)/Logger.cpp \
-	$(SRC_DIR)/Helper.cpp
+	$(SRC_DIR)/Helper.cpp \
+	$(SRC_DIR)/RSAEnc.cpp
 
 # Object files
 OBJS = $(SRCS:$(SRC_DIR)/%.cpp=$(BIN_DIR)/%.o)

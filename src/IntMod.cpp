@@ -115,6 +115,10 @@ int IntMod::powerModR2L(int exp) {
   return (int) r;
 }
 
+IntMod::IntMod() {
+  Logger::log(MessageType::WARNING, "IntMod", "Default constructor of IntMod may bave been called without setting a default modulus or value");
+}
+
 IntMod::IntMod(int val) {
   if (!isDefaultModSet()) {
     throw runtime_error("Default modulus not set.");

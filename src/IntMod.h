@@ -22,6 +22,7 @@ private:
 
 public:
     // Constructors
+    IntMod();
     IntMod(int val);
     IntMod(int val, int p);
 

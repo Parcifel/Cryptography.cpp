@@ -13,5 +13,6 @@ bool fileExists(string filename);
 int countPrimes(int min, int max, int k);
 int fetchSmallPrime(int min, int k, int index);
 long generatePrime(int k);
+long long generateEncExp(long long phi);
 
 #endif
