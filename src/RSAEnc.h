@@ -19,6 +19,7 @@ private:
   vector<int> stringToChunkArray(const string& str);
   vector<bool> chunkArrayToBits(const vector<int>& chunks);
   string chunkArrayToString(const vector<int>& chunks);
+  vector<int> bitsToChunkArray(const vector<bool>& bits);
 public:
   RSAEnc();
   RSAEnc(long long p, long long q);

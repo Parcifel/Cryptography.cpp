@@ -43,8 +43,30 @@ void test_rsa_key_generation();
 int main() {
   init();
 
-  RSAEnc rsa(971, 977);
-  rsa.encrypt("Hello World");
+
+  // IntMod::setDefaultModulus(946720);
+  // IntMod e(690403, 946720);
+  // IntMod d(88133, 946720);
+  // Logger::log(MessageType::INFO, "e", e); 
+  // Logger::log(MessageType::INFO, "d", d); 
+  // Logger::log(MessageType::INFO, "ed", e*d); 
+
+  // extendedEuclidAlgo(946720, 690403);
+
+  int p = 241, q = 149;
+
+  Logger::log(MessageType::INFO, "Random Prime", p);
+  Logger::log(MessageType::INFO, "Prime bits", decToBin(p));
+  Logger::log(MessageType::INFO, "Random Prime", q);
+  Logger::log(MessageType::INFO, "Prime bits", decToBin(q));
+  
+  RSAEnc rsa(p, q, 30349);
+  Logger::log(MessageType::INFO, "n bits", decToBin(35909));
+  Logger::log(MessageType::INFO, "e bits", decToBin(30349));
+  Logger::log(MessageType::INFO, "d bits", decToBin(5509));
+  
+  vector<bool> encrypted_msg = rsa.encrypt("MEET AT NINE");
+  string decrypted_msg = rsa.decrypt(encrypted_msg);
 
   close();
   return 0;
@@ -84,8 +106,8 @@ void test_euclidean_algorithms() {
   Logger::log(MessageType::INFO, "Test", "Euclidean Algorithms");
   int d = euclidAlgo(4864, 3458);
   Logger::log(MessageType::INFO, "Euclidean Algo", "gcd(4864, 3458) = " + to_string(d));
-  vector<int> D = extendedEuclidAlgo(29, 11);
-  vector<vector<int>> D_tab = {D};
+  vector<long long> D = extendedEuclidAlgo(29, 11);
+  vector<vector<long long>> D_tab = {D};
   Logger::table(MessageType::INFO, "Extended Euclidean Algo", {}, D_tab);
 }
 

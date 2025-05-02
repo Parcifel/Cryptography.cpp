@@ -4,7 +4,7 @@
 #include <bitset>
 using namespace std;
 
-int IntMod::defaultMod = 2;
+long long IntMod::defaultMod = 2;
 bool IntMod::defaultModSet = false;
 
 void IntMod::abs() {
@@ -24,7 +24,7 @@ void IntMod::check_base(const IntMod& b) const{
   }
 }
 
-int IntMod::powerModL2R(int e) {
+long long IntMod::powerModL2R(long long e) {
   if (e < 0) {
     throw invalid_argument("Expected non-negative exponent, got" + to_string(e));
   }
@@ -70,10 +70,10 @@ int IntMod::powerModL2R(int e) {
   Logger::blank(MessageType::DEBUG);
   // == == 
   
-  return (int) r;
+  return (long long) r;
 }
 
-int IntMod::powerModR2L(int exp) {
+long long IntMod::powerModR2L(long long exp) {
   if (exp < 0) {
     throw invalid_argument("Expected non-negative exponent, got" + to_string(exp));
   }
@@ -112,14 +112,14 @@ int IntMod::powerModR2L(int exp) {
   Logger::blank(MessageType::DEBUG);
   //== ==
 
-  return (int) r;
+  return (long long) r;
 }
 
 IntMod::IntMod() {
   Logger::log(MessageType::WARNING, "IntMod", "Default constructor of IntMod may bave been called without setting a default modulus or value");
 }
 
-IntMod::IntMod(int val) {
+IntMod::IntMod(long long val) {
   if (!isDefaultModSet()) {
     throw runtime_error("Default modulus not set.");
   }
@@ -128,7 +128,7 @@ IntMod::IntMod(int val) {
   norm();
 }
 
-IntMod::IntMod(int val, int p) {
+IntMod::IntMod(long long val, long long p) {
   this->val = val;
   this->p = p;
   norm();
@@ -136,7 +136,7 @@ IntMod::IntMod(int val, int p) {
 }
 
 /* ASSIGNMENT */
-IntMod IntMod::operator=(int a) {
+IntMod IntMod::operator=(long long a) {
   this->val = a % p;
   norm();
   return *this;
@@ -151,7 +151,7 @@ IntMod IntMod::operator+(const IntMod& b) const {
   return result;
 }
 
-IntMod IntMod::operator+(int b) const {
+IntMod IntMod::operator+(long long b) const {
   IntMod result(val);
   result = (this->val + b) % p;
   return result;
@@ -166,7 +166,7 @@ IntMod IntMod::operator-(const IntMod& b) const {
   return result;
 }
 
-IntMod IntMod::operator-(int b) const {
+IntMod IntMod::operator-(long long b) const {
   IntMod result(val);
   result = (this->val - b) % p;
   return result;
@@ -181,7 +181,7 @@ IntMod IntMod::operator*(const IntMod& b) const {
   return result;
 }
 
-IntMod IntMod::operator*(int b) const {
+IntMod IntMod::operator*(long long b) const {
   IntMod result(val);
   result = (this->val * b) % p;
   return result;
@@ -197,7 +197,7 @@ IntMod IntMod::operator/(const IntMod& b) const {
   }
 
   // use extended euclidean algorithm to find modular inverse of b
-  vector<int> eea = extendedEuclidAlgo((int)p, (int)b.val);
+  vector<long long> eea = extendedEuclidAlgo((long long)p, (long long)b.val);
   IntMod inv(eea[2], p);
 
   IntMod result(val);
@@ -207,7 +207,7 @@ IntMod IntMod::operator/(const IntMod& b) const {
 }
 
 /* POWER */
-IntMod IntMod::pow(int e) {
+IntMod IntMod::pow(long long e) {
   if (e < 0) {
     // get inverse and then take exponenet of that
     IntMod result = 1 / e;
@@ -218,7 +218,7 @@ IntMod IntMod::pow(int e) {
   }
 
   IntMod::setDefaultModulus(p);
-  int a = powerModL2R(e);
+  long long a = powerModL2R(e);
   IntMod l2r(a);
   // int b = powerModR2L(e);
   // IntMod r2l(b);
@@ -268,7 +268,7 @@ IntMod& IntMod::operator+=(const IntMod& b) {
   return *this;
 }
 
-IntMod& IntMod::operator+=(int b) {
+IntMod& IntMod::operator+=(long long b) {
   this->val = (this->val + b) % p;
   norm();
   return *this;
@@ -282,7 +282,7 @@ IntMod& IntMod::operator-=(const IntMod& b) {
   return *this;
 }
 
-IntMod& IntMod::operator-=(int b) {
+IntMod& IntMod::operator-=(long long b) {
   this->val = (this->val - b) % p;
   norm();
   return *this;
@@ -296,7 +296,7 @@ IntMod& IntMod::operator*=(const IntMod& b) {
   return *this;
 }
 
-IntMod& IntMod::operator*=(int b) {
+IntMod& IntMod::operator*=(long long b) {
   this->val = (this->val * b) % p;
   norm();
   return *this;
@@ -383,7 +383,7 @@ ostream& operator<<(ostream& os, const IntMod& a) {
 }
 
 istream& operator>>(istream& is, IntMod& a) {
-  int val;
+  long long val;
   is >> val;
   a = val;
   return is;
@@ -394,7 +394,7 @@ string IntMod::toString() const {
 }
 
 /* ACCESSORS */
-int IntMod::modulus() const {
+long long IntMod::modulus() const {
   return p;
 }
 

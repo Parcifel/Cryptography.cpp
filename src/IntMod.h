@@ -9,35 +9,35 @@ using namespace std;
 class IntMod {
 private:
     long long val;
-    int p;
-    static int defaultMod;
+    long long p;
+    static long long defaultMod;
     static bool defaultModSet;
     void abs();
     void norm();
     void check_base(const IntMod& b) const;
 
     // Power algorithms
-    int powerModL2R(int e);
-    int powerModR2L(int e);
+    long long powerModL2R(long long e);
+    long long powerModR2L(long long e);
 
 public:
     // Constructors
     IntMod();
-    IntMod(int val);
-    IntMod(int val, int p);
+    IntMod(long long val);
+    IntMod(long long val, long long p);
 
     // Assignment
-    IntMod operator=(int a);
+    IntMod operator=(long long a);
 
     // Arithmetic operators
     IntMod operator+(const IntMod& b) const;
-    IntMod operator+(int b) const;
+    IntMod operator+(long long b) const;
     IntMod operator-(const IntMod& b) const;
-    IntMod operator-(int b) const;
+    IntMod operator-(long long b) const;
     IntMod operator*(const IntMod& b) const;
-    IntMod operator*(int b) const;
+    IntMod operator*(long long b) const;
     IntMod operator/(const IntMod& b) const;
-    IntMod pow(int e);
+    IntMod pow(long long e);
 
     // Increment/Decrement
     IntMod operator++();
@@ -47,11 +47,11 @@ public:
 
     // Compound assignment
     IntMod& operator+=(const IntMod& b);
-    IntMod& operator+=(int b);
+    IntMod& operator+=(long long b);
     IntMod& operator-=(const IntMod& b);
-    IntMod& operator-=(int b);
+    IntMod& operator-=(long long b);
     IntMod& operator*=(const IntMod& b);
-    IntMod& operator*=(int b);
+    IntMod& operator*=(long long b);
 
     // Unary operators
     IntMod operator+() const;
@@ -94,16 +94,16 @@ public:
     string toString() const;
 
     /* ACCESSORS */
-    int modulus() const;
+    long long modulus() const;
     static bool isDefaultModSet() {
       return defaultModSet;
     }
-    static void setDefaultModulus(int mod) {
+    static void setDefaultModulus(long long mod) {
       defaultMod = mod;
       IntMod::defaultModSet = true;
       Logger::log(MessageType::DEBUG, "Default Divisor", "Default devisor set to " + to_string(mod));
     }
-    static int getDefaultModulus() {
+    static long long getDefaultModulus() {
       if (!isDefaultModSet()) {
         throw runtime_error("Default modulus not set.");
       }
@@ -115,4 +115,4 @@ inline std::string to_string(const IntMod& a) {
   return a.toString();
 }
 
-#endif // INT_MOD_H
+#endif

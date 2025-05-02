@@ -7,7 +7,10 @@
 
 template<typename T>
 vector<T> reverse(const vector<T>& v) {
-  vector<T> reversed(v.rbegin(), v.rend());
+  vector<T> reversed;
+  for (size_t i = v.size(); i > 0; --i) {
+    reversed.push_back(v[i - 1]);
+  }
   return reversed;
 }
 
@@ -16,6 +19,8 @@ int binToDec(const vector<bool>& bits) {
   for (size_t i = 0; i < bits.size(); ++i) {
     if (bits[i]) {
       result += (1 << (bits.size() - 1 - i));
+    }else {
+      result += (0 << (bits.size() - 1 - i));
     }
   }
   return result;
@@ -27,10 +32,22 @@ vector<bool> decToBin(int n) {
     bits.push_back(n % 2);
     n >>= 1;
   }
-  reverse(bits);
+  bits = reverse(bits);
   return bits;
 }
 
+vector<bool> decToBin(int n, int k) {
+  vector<bool> bits;
+  while (n > 0) {
+    bits.push_back(n % 2);
+    n >>= 1;
+  }
+  while (bits.size() < (long unsigned) k) {
+    bits.push_back(0);
+  }
+  bits = reverse(bits);
+  return bits;
+}
 
 int randomInt(int min, int max) {
   static random_device rd;
@@ -46,16 +63,17 @@ int randomInt(int min, int max) {
  * @param b
  * @return
  */
-int euclidAlgo(int a, int b) {
-  if (b < a) {
-    throw invalid_argument("Expected a <= b, got a = " + to_string(a) + " and  b = " + to_string(b)); 
+long long euclidAlgo(long long a, long long b) {
+  if (b > a) {
+    // throw invalid_argument("Expected a >= b, got a = " + to_string(a) + " and  b = " + to_string(b)); 
+    swap(a, b);
   }
 
   // == for debug output ==
-  vector<vector<int>> table;
+  vector<vector<long long>> table;
   // == ==
 
-  int r = 1;
+  long long r = 1;
   while (b != 0) {
     r = a % b;
     table.push_back({a, b, r});
@@ -79,7 +97,7 @@ int euclidAlgo(int a, int b) {
 }
 
 /**
- * @brief Gets the gcd(a, b) with a < b
+ * @brief Gets the gcd(a, b) with a >= b
  * output[0]: d = gcd(a, b)
  * output[1]: x
  * output[2]: y
@@ -89,15 +107,16 @@ int euclidAlgo(int a, int b) {
  * @param b
  * @return a vector with a few output values as described in the description
  */
-vector<int> extendedEuclidAlgo(int a, int b) {
-  if (b < a) {
-    throw invalid_argument("Expected a <= b, got a = " + to_string(a) + " and  b = " + to_string(b)); 
+vector<long long> extendedEuclidAlgo(long long a, long long b) {
+  if (b > a) {
+    // throw invalid_argument("Expected a >= b, got a = " + to_string(a) + " and  b = " + to_string(b)); 
+    swap(a, b);
   }
 
   // == for debug output ==
   //  this can be optimised to not store the whole table but only 2 or 3 rows at a time
-  vector<vector<int>> table;
-  vector<int> row = {0, 0, 0, 0};
+  vector<vector<long long>> table;
+  vector<long long> row = {0, 0, 0, 0};
   // == ==
 
   row = {0, a, 1, 0};
@@ -105,11 +124,11 @@ vector<int> extendedEuclidAlgo(int a, int b) {
   row = {0, b, 0, 1};
   table.push_back(row);
 
-  int q, r, x, y;
-  int i = 1;
+  long long q, r, x, y;
+  long long i = 1;
   while (table[i][1] != 0) {                  // r[i] != 0
     i++;
-    q = (int) (table[i-2][1] / table[i-1][1]);// r[i-2] / r[i-1]
+    q = (long long) (table[i-2][1] / table[i-1][1]);// r[i-2] / r[i-1]
     r = table[i-2][1] - q * table[i-1][1];    // r[i-2] - q[i] * r[i-1]
     x = table[i-2][2] - q * table[i-1][2];    // x[i-2] - q[i] * x[i-1]
     y = table[i-2][3] - q * table[i-1][3];    // y[i-2] - q[i] * y[i-1]
@@ -117,7 +136,7 @@ vector<int> extendedEuclidAlgo(int a, int b) {
     table.push_back(row);
   }
 
-  vector<int> result = {table[i-1][1], table[i-1][2], table[i-1][3]};
+  vector<long long> result = {table[i-1][1], table[i-1][2], table[i-1][3]};
 
   // == for verbose output ==
   Logger::blank(MessageType::DEBUG, 2);

@@ -7,6 +7,8 @@
 
 using namespace std;
 
+// TODO: bitset<k>
+
 void RSAEnc::setPrimeBitLength() {
   // Set the bit length of the primes p and q
   k = 0;
@@ -24,6 +26,7 @@ vector<int> RSAEnc::stringToChunkArray(const string& str) {
   // Make single array of bits
   vector<bool> bits;
   for (char c : str) {
+    Logger::log(MessageType::DEBUG, "Char", to_string((char) c) + " - " + to_string((int)c));
     bitset<8> b(c);
     for (int i = 7; i >= 0; --i) {
       bits.push_back(b[i]);
@@ -36,7 +39,7 @@ vector<int> RSAEnc::stringToChunkArray(const string& str) {
   vector<int> chunks;
   size_t next_chunk = 0;
   while (next_chunk < bits.size()) {
-    size_t chunk_size = randomInt(2, k/2); // Random chunk size
+    size_t chunk_size = randomInt(k/4, k/2); // Random chunk size
     // Adjust chunk size if it exceeds the remaining bits
     if (next_chunk + chunk_size > bits.size()) { 
       chunk_size = bits.size() - next_chunk;
@@ -61,7 +64,7 @@ vector<bool> RSAEnc::chunkArrayToBits(const vector<int>& chunks) {
   vector<bool> bits;
   for (int value : chunks) {
     Logger::log(MessageType::VERBOSE, "Value", value);
-    vector<bool> value_bits = decToBin(value);
+    vector<bool> value_bits = decToBin(value, k);
     Logger::log(MessageType::VERBOSE, "Value bits", value_bits);
     for (bool bit : value_bits) {
       bits.push_back(bit);
@@ -69,6 +72,45 @@ vector<bool> RSAEnc::chunkArrayToBits(const vector<int>& chunks) {
   }
   return bits;
 }
+
+string RSAEnc::chunkArrayToString(const vector<int>& chunks) {
+  vector<bool> bits;
+  for (int value : chunks) {
+    vector<bool> value_bits = decToBin(value);
+    // remove leading 1
+    Logger::log(MessageType::INFO, "Value bits", value_bits);
+    value_bits.erase(value_bits.begin());
+    Logger::log(MessageType::INFO, "Value bits", value_bits);
+    for (bool bit : value_bits) {
+      bits.push_back(bit);
+    }
+  }
+  Logger::log(MessageType::INFO, "Bits", bits);
+
+  stringstream ss;
+  for (size_t i = 0; i < bits.size(); i += 8) {
+    vector<bool> chunk_bits(bits.begin() + i, bits.begin() + min(i + 8, bits.size()));
+    // chunk_bits = reverse(chunk_bits);
+    Logger::log(MessageType::INFO, "Chunk bits", chunk_bits);
+    ss << static_cast<char>(binToDec(chunk_bits));
+  }
+  return ss.str();
+}
+
+vector<int> RSAEnc::bitsToChunkArray(const vector<bool>& bits) {
+  vector<int> chunks;
+  size_t chunk_size = k;
+  size_t next_chunk = 0;
+  while (next_chunk < bits.size()) {
+    vector<bool> chunk_bits(bits.begin() + next_chunk, bits.begin() + min(next_chunk + chunk_size, bits.size()));
+    Logger::log(MessageType::VERBOSE, "Chunk bits", chunk_bits);
+    Logger::log(MessageType::VERBOSE, "Chunk value", binToDec(chunk_bits));
+    chunks.push_back(binToDec(chunk_bits));
+    next_chunk += chunk_size;
+  }
+  return chunks;
+}
+
 
 // vector<vector<bool>> RSAEnc::splitBitArray(const vector<bool>& bits) {
   
@@ -183,8 +225,28 @@ vector<bool> RSAEnc::encrypt(const string& message) {
     Logger::log(MessageType::INFO, "Encrypted Chunk", b);
     encrypted_chunk_values.push_back((int) b);
   }
-  
+
   vector<bool> bits = chunkArrayToBits(encrypted_chunk_values);
   Logger::log(MessageType::DEBUG, "Encrypted Message", bits);
   return bits;
+}
+
+
+string RSAEnc::decrypt(const vector<bool>& bits) {
+
+  vector<int> chunk_values = bitsToChunkArray(bits);
+  Logger::log(MessageType::INFO, "Chunk Values", chunk_values);
+  IntMod::setDefaultModulus(n);
+  vector<int> decrypted_chunk_values;
+  for (int value : chunk_values) {
+    IntMod a(value);
+    IntMod b = a.pow((int) d);
+    Logger::log(MessageType::INFO, "Decrypted Chunk", b);
+    decrypted_chunk_values.push_back((int) b);
+  }
+  Logger::log(MessageType::INFO, "Decrypted Chunk Values", decrypted_chunk_values);
+
+  string decrypted_message = chunkArrayToString(decrypted_chunk_values);
+  Logger::log(MessageType::INFO, "Decrypted Message", decrypted_message);
+  return decrypted_message;
 }
